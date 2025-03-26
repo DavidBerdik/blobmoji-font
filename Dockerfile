@@ -1,21 +1,15 @@
 FROM ubuntu:latest
 
-COPY svg ./svg
-COPY third_party/region-flags/svg ./flags
-COPY emoji_aliases.txt NotoColorEmoji.tmpl.ttx.tmpl Blobmoji.gpl requirements.txt ./
-COPY AUTHORS_Noto CONTRIBUTORS_Noto CONTRIBUTORS_Blob.md CHANGES.md MODIFIED.md LICENSE ./
-COPY emoji_builder.zip ./
+ENV PATH="$PATH:/harfbuzz/build/util"
 
-RUN apt update && apt install -y \
-	python3 \
-	python-is-python3 \
-	python3-pip \
-	unzip \
-	fonts-comic-neue \
+RUN apt-get update && apt-get install -y python3 python-is-python3 python3-pip python3-venv git meson pkg-config ragel gtk-doc-tools gcc g++ libfreetype6-dev libglib2.0-dev libcairo2-dev \
 	&& apt-get clean && rm -f /var/lib/apt/lists/*_* \
-	&& pip install -r /requirements.txt --no-cache-dir --break-system-packages \
-	&& unzip emoji_builder.zip \
-	&& chmod +x emoji_builder
+	&& pip install notofonttools --no-cache-dir --break-system-packages \
+	&& mkdir /output \
+	&& git clone https://github.com/harfbuzz/harfbuzz.git \
+	&& cd harfbuzz \
+	&& meson build && ninja -Cbuild && meson test -Cbuild
 
-CMD ./emoji_builder -b /build -o Blobmoji.ttf -O /output --flags ./flags blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl --default_font "Comic Neue" && \
-	mv /output/Blobmoji_win.ttf /output/BlobmojiWindows.ttf
+ADD . /blobmoji
+WORKDIR /blobmoji
+CMD ./full_rebuild.sh
