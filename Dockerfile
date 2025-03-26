@@ -17,5 +17,5 @@ RUN apt update && apt install -y \
 	&& unzip emoji_builder.zip \
 	&& chmod +x emoji_builder
 
-CMD ./emoji_builder -b /build -o Blobmoji.ttf -O /output --flags ./flags blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl && \
+CMD ./emoji_builder -b /build -o Blobmoji.ttf -O /output --flags ./flags blobmoji -w -a ./emoji_aliases.txt --ttx-tmpl ./NotoColorEmoji.tmpl.ttx.tmpl --palette ./Blobmoji.gpl --default_font "Comic Neue" && \
 	mv /output/Blobmoji_win.ttf /output/BlobmojiWindows.ttf
