@@ -1,3 +1,9 @@
+# This project has moved.
+
+### This repository has been abandoned in favor of [blobmoji2](https://github.com/DavidBerdik/blobmoji2). If you wish to contribute to the development of Blobmoji, please do so there.
+
+---
+
 #### DISCLAIMER:
 I am **neither** affiliated nor in _any_ relationship to the original creators or to Emojipedia or anything or anyone else.
 
